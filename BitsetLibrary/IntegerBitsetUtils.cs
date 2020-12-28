@@ -16,6 +16,11 @@ namespace BitsetLibrary
         public static void BitAdder(BitArray bit1, BitArray bit2, BitArray inRemainder, out BitArray outRemainder,
             out BitArray sum)
         {
+            if (bit1 == null) throw new ArgumentNullException(nameof(bit1));
+            if (bit2 == null) throw new ArgumentNullException(nameof(bit2));
+            
+            inRemainder ??= new BitArray(1, false);
+            
             sum = new BitArray(new BitArray(bit1).Xor(bit2)).Xor(inRemainder);
             outRemainder =
                 new BitArray(new BitArray(new BitArray(bit1).Xor(bit2)).And(inRemainder)).Or(
@@ -104,6 +109,8 @@ namespace BitsetLibrary
         /// <returns></returns>
         public static BitArray BitArrayTruncate(BitArray array, int number)
         {
+            if (array == null) throw new ArgumentNullException(nameof(array));
+            
             var result = new BitArray(number, false);
             for (var i = 0; i < number; i++) result.Set(i, array.Get(i));
 
@@ -116,6 +123,8 @@ namespace BitsetLibrary
         /// <param name="array"></param>
         public static void PrintValues(BitArray array)
         {
+            if (array == null) throw new ArgumentNullException(nameof(array));
+            
             for (var i = array.Length - 1; i >= 0; i--) Console.Write(array.Get(i) ? "1" : "0");
         }
 
@@ -125,6 +134,8 @@ namespace BitsetLibrary
         /// <returns>Reverse string</returns>
         public static string Reverse(string s)
         {
+            if (s == null) throw new ArgumentNullException(nameof(s));
+            
             var charArray = s.ToCharArray();
             Array.Reverse(charArray);
             return new string(charArray);

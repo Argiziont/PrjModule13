@@ -7,8 +7,8 @@ namespace BitsetLibrary
 {
     public class IntegerBitsetMatrix
     {
-        private readonly int _columns;
-        private readonly int _rows;
+        private int _columns;
+        private int _rows;
 
         public IntegerBitsetMatrix(int rows, int columns)
         {
@@ -22,7 +22,7 @@ namespace BitsetLibrary
             }
         }
 
-        public List<List<IntegerBitset>> Matrix { get; set; }
+        public List<List<IntegerBitset>> Matrix { get; private set; }
 
         /// <summary>
         ///     Number of columns in matrix
@@ -49,6 +49,11 @@ namespace BitsetLibrary
                 .GroupBy(i => i.index, i => i.item)
                 .Select(g => g.ToList())
                 .ToList();
+            
+            var tmp = _columns;
+            _columns = _rows;
+            _rows = tmp;
+
         }
 
         /// <summary>
@@ -109,7 +114,7 @@ namespace BitsetLibrary
             var bRows = multiplierMatrix.GetRows();
             var bCols = multiplierMatrix.GetColumns();
             if (aCols != bRows)
-                throw new Exception("Non-conformable matrices in MatrixProduct");
+                throw new OperationCanceledException("Non-conformable matrices in MultiplyByMatrix");
             var result = new IntegerBitsetMatrix(aRows, bCols);
 
             for (var i = 0; i < aCols; ++i) // each row of A
@@ -127,6 +132,8 @@ namespace BitsetLibrary
                         new BitArray(1, false), out _));
 
             Matrix = result.Matrix;
+            _columns = result.GetColumns();
+            _rows = result.GetRows();
         }
     }
 }
